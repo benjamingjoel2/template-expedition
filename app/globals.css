@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/*
+ * Colour and font values come from site.config.ts; layout.tsx writes them to
+ * <html> as --c-* and --font-brand. Do not hard-code brand values here.
+ */
+
+@custom-variant xs (@media (width >= 30rem));
+
+@theme {
+  --font-sans: var(--font-brand), "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --color-accent: var(--c-accent);
+  --color-accent-deep: var(--c-accent-deep);
+  --color-highlight: var(--c-highlight);
+  --color-highlight-tint: var(--c-highlight-tint);
+  --color-focus: var(--c-focus);
+  --color-ink: var(--c-ink);
+  --color-ink-soft: var(--c-ink-soft);
+  --color-paper: var(--c-paper);
+  --color-sand: var(--c-sand);
+  --color-stone: var(--c-stone);
+  --color-tint: var(--c-tint);
+
+  --ease-ref: cubic-bezier(0.22, 1, 0.36, 1);
+  --breakpoint-xs: 30rem;
+}
+
+/* ── Rhythm ─────────────────────────────────────────────────────────────── */
+
+:root {
+  --gutter: 15px;
+  --header-h: 56px;
+  --bar-h: 52px;
+  --dur: 0.8s;
+  --dur-fast: 0.4s;
+  color-scheme: light;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: max(28px, 3.96vw);
+    --header-h: 80px;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+}
+
+/* Phones must never scroll sideways. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-weight: 400;
+}
+
+::selection {
+  background: var(--color-highlight);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] :focus-visible {
+  outline-color: var(--color-highlight);
+}
+
+/* ── Type scale ─────────────────────────────────────────────────────────── */
+
+@utility text-display {
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  font-size: min(22vw, 9rem);
+  font-weight: 500;
+  line-height: 0.85;
+  @media (min-width: 768px) {
+    font-size: min(12.85vw, 15rem);
+  }
+}
+
+@utility text-nav {
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-size: clamp(0.8125rem, 1.05vw, 0.9375rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+@utility text-body-lg {
+  letter-spacing: -0.02em;
+  font-size: clamp(1.125rem, 1.74vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.18;
+}
+
+@utility text-h1 {
+  letter-spacing: -0.035em;
+  font-size: clamp(2.25rem, 6.1vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.99;
+}
+
+@utility text-h3 {
+  letter-spacing: -0.035em;
+  font-size: clamp(1.25rem, 3.47vw, 3.75rem);
+  font-weight: 500;
+  line-height: 0.99;
+}
+
+@utility text-lead {
+  letter-spacing: -0.025em;
+  font-size: clamp(1.3125rem, 2.08vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+@utility text-link {
+  letter-spacing: -0.025em;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+@utility text-micro {
+  letter-spacing: -0.03em;
+  font-size: clamp(0.75rem, 1.11vw, 1rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+@utility text-story {
+  letter-spacing: -0.035em;
+  font-size: clamp(2.1875rem, 6.1vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.99;
+}
+
+/* ── Shapes ─────────────────────────────────────────────────────────────── */
+
+@utility rounded-blob {
+  border-radius: 46% 54% 44% 56% / 58% 50% 50% 42%;
+}
+
+@utility rounded-blob-pill {
+  border-radius: 999px 860px 920px 780px / 780px 920px 860px 999px;
+}
+
+@utility gutter {
+  padding-inline: var(--gutter);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── Motion ─────────────────────────────────────────────────────────────── */
+
+html[data-intro="done"] [data-intro-overlay] {
+  display: none;
+}
+
+@keyframes nudge {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-rise {
+  display: block;
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+
+html:not([data-intro="done"]) .hero-wait {
+  animation-play-state: paused;
+}
